@@ -3,8 +3,9 @@ import axios from 'axios';
 import SlimSelect from 'slim-select';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-axios.defaults.headers.common['x-api-key'] =
-  'live_tzjAClXPRCiEccb3Rt2X6PNjz3Orc6Q6YWcRggnk18wgROVvLRzhuFoBYNNSWNOu';
+//? ???????????????????????????????
+// axios.defaults.headers.common['x-api-key'] =
+//   'live_tzjAClXPRCiEccb3Rt2X6PNjz3Orc6Q6YWcRggnk18wgROVvLRzhuFoBYNNSWNOu';
 
 const refs = {
   select: document.querySelector('.breed-select'),
