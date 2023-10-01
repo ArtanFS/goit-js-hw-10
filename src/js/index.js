@@ -1,5 +1,7 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
 import axios from 'axios';
+import SlimSelect from 'slim-select';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 axios.defaults.headers.common['x-api-key'] =
   'live_tzjAClXPRCiEccb3Rt2X6PNjz3Orc6Q6YWcRggnk18wgROVvLRzhuFoBYNNSWNOu';
@@ -10,6 +12,18 @@ const refs = {
   loader: document.querySelector('.loader'),
   error: document.querySelector('.error'),
 };
+
+// new SlimSelect({
+//   select: '.breed-select',
+//   settings: {
+//     placeholderText: 'Custom Placeholder Text',
+//   },
+// });
+
+// select.setData([
+//   { text: 'Value 1', value: 'value1' },
+//   { text: 'Value 2', value: 'value2' },
+// ]);
 
 refs.select.classList.add('visually-hidden');
 refs.error.classList.add('visually-hidden');
@@ -22,7 +36,14 @@ fetchBreeds()
   })
   .catch(err => {
     refs.loader.classList.add('visually-hidden');
-    refs.error.classList.remove('visually-hidden');
+    // refs.error.classList.remove('visually-hidden');
+    Notify.failure('Oops! Something went wrong! Try reloading the page!', {
+      position: 'center-top',
+      width: '600px',
+      fontSize: '24px',
+      timeout: 1500,
+      useIcon: false,
+    });
   });
 
 refs.select.addEventListener('change', e => {
