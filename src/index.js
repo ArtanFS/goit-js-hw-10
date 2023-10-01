@@ -7,20 +7,38 @@ axios.defaults.headers.common['x-api-key'] =
 const refs = {
   select: document.querySelector('.breed-select'),
   catInfo: document.querySelector('.cat-info'),
+  loader: document.querySelector('.loader'),
+  error: document.querySelector('.error'),
 };
+
+refs.select.classList.add('visually-hidden');
+refs.error.classList.add('visually-hidden');
 
 fetchBreeds()
   .then(data => {
     refs.select.innerHTML = createList(data);
+    refs.select.classList.remove('visually-hidden');
+    refs.loader.classList.add('visually-hidden');
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    refs.loader.classList.add('visually-hidden');
+    refs.error.classList.remove('visually-hidden');
+  });
 
 refs.select.addEventListener('change', e => {
+  refs.catInfo.classList.add('visually-hidden');
+  refs.loader.classList.remove('visually-hidden');
   fetchCatByBreed(e.target.value)
     .then(data => {
       refs.catInfo.innerHTML = createMarkup(data);
+      refs.catInfo.classList.remove('visually-hidden');
+      refs.loader.classList.add('visually-hidden');
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      refs.catInfo.classList.add('visually-hidden');
+      refs.loader.classList.add('visually-hidden');
+      refs.error.classList.remove('visually-hidden');
+    });
 });
 
 function createList(arr) {
@@ -35,7 +53,7 @@ function createMarkup(arr) {
       ({
         url,
         breeds: [{ name, description, temperament }],
-      }) => `<img src="${url}" alt="${name}" width="360"/>
+      }) => `<img src="${url}" alt="${name}" height="360"/>
              <div>
                <h1>${name}</h1>
                <p>${description}</p>
