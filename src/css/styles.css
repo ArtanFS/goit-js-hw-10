@@ -1,7 +1,3 @@
-.cat-info {
-  display: flex;
-}
-
 .visually-hidden {
   position: absolute;
   overflow: hidden;
@@ -15,9 +11,14 @@
   clip-path: inset(100%);
 }
 
+.select {
+  width: 240px;
+  margin-bottom: 25px;
+}
+
 .load {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border: 5px dotted #000;
   border-radius: 50%;
   display: inline-block;
@@ -33,4 +34,30 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loader {
+  display: flex;
+  gap: 15px;
+  font-size: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-info {
+  display: flex;
+  gap: 25px;
+}
+
+.cat-desc {
+  width: 720px;
+}
+
+.cat-title {
+  font-size: 48px;
+  margin-top: 0;
+}
+
+.cat-text {
+  font-size: 24px;
 }

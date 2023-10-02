@@ -1,6 +1,7 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
 import axios from 'axios';
 import SlimSelect from 'slim-select';
+import 'slim-select/dist/slimselect.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 //? ???????????????????????????????
@@ -14,59 +15,48 @@ const refs = {
   error: document.querySelector('.error'),
 };
 
-// new SlimSelect({
-//   select: '.breed-select',
-//   settings: {
-//     placeholderText: 'Custom Placeholder Text',
-//   },
-// });
-
-// select.setData([
-//   { text: 'Value 1', value: 'value1' },
-//   { text: 'Value 2', value: 'value2' },
-// ]);
-
-refs.select.classList.add('visually-hidden');
-refs.error.classList.add('visually-hidden');
+refs.select.classList.toggle('visually-hidden');
+refs.error.classList.toggle('visually-hidden');
 
 fetchBreeds()
   .then(data => {
     refs.select.innerHTML = createList(data);
-    refs.select.classList.remove('visually-hidden');
-    refs.loader.classList.add('visually-hidden');
+    console.log(refs.select.innerHTML);
+    refs.select.classList.toggle('visually-hidden');
+    refs.loader.classList.toggle('visually-hidden');
+    new SlimSelect({
+      select: '.breed-select',
+      settings: {
+        placeholderText: 'Select a cat breed',
+      },
+    });
   })
   .catch(err => {
-    refs.loader.classList.add('visually-hidden');
-    // refs.error.classList.remove('visually-hidden');
-    Notify.failure('Oops! Something went wrong! Try reloading the page!', {
-      position: 'center-top',
-      width: '600px',
-      fontSize: '24px',
-      timeout: 1500,
-      useIcon: false,
-    });
+    refs.loader.classList.toggle('visually-hidden');
+    errMsg();
   });
 
 refs.select.addEventListener('change', e => {
-  refs.catInfo.classList.add('visually-hidden');
-  refs.loader.classList.remove('visually-hidden');
+  refs.catInfo.classList.toggle('visually-hidden');
+  refs.loader.classList.toggle('visually-hidden');
   fetchCatByBreed(e.target.value)
     .then(data => {
       refs.catInfo.innerHTML = createMarkup(data);
-      refs.catInfo.classList.remove('visually-hidden');
-      refs.loader.classList.add('visually-hidden');
+      refs.catInfo.classList.toggle('visually-hidden');
+      refs.loader.classList.toggle('visually-hidden');
     })
     .catch(err => {
-      refs.catInfo.classList.add('visually-hidden');
-      refs.loader.classList.add('visually-hidden');
-      refs.error.classList.remove('visually-hidden');
+      refs.catInfo.classList.toggle('visually-hidden');
+      refs.loader.classList.toggle('visually-hidden');
+      errMsg();
     });
 });
 
 function createList(arr) {
-  return arr
+  const list = arr
     .map(({ id, name }) => `<option value="${id}">${name}</option>`)
     .join('');
+  return '<option data-placeholder="true"></option>' + list;
 }
 
 function createMarkup(arr) {
@@ -76,11 +66,21 @@ function createMarkup(arr) {
         url,
         breeds: [{ name, description, temperament }],
       }) => `<img src="${url}" alt="${name}" height="360"/>
-             <div>
-               <h1>${name}</h1>
-               <p>${description}</p>
-               <p><b>Temperament: </b>${temperament}</p>
+             <div class="cat-desc">
+               <h1 class="cat-title">${name}</h1>
+               <p class="cat-text">${description}</p>
+               <p class="cat-text"><b>Temperament: </b>${temperament}</p>
              </div>`
     )
     .join('');
+}
+
+function errMsg() {
+  Notify.failure('Oops! Something went wrong! Try reloading the page!', {
+    position: 'center-top',
+    width: '600px',
+    fontSize: '24px',
+    timeout: 1500,
+    useIcon: false,
+  });
 }
