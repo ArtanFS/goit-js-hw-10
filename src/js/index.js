@@ -1,12 +1,7 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
-import axios from 'axios';
 import SlimSelect from 'slim-select';
 import 'slim-select/dist/slimselect.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
-//? ???????????????????????????????
-// axios.defaults.headers.common['x-api-key'] =
-//   'live_tzjAClXPRCiEccb3Rt2X6PNjz3Orc6Q6YWcRggnk18wgROVvLRzhuFoBYNNSWNOu';
 
 const refs = {
   select: document.querySelector('.breed-select'),
@@ -21,7 +16,6 @@ refs.error.classList.toggle('visually-hidden');
 fetchBreeds()
   .then(data => {
     refs.select.innerHTML = createList(data);
-    console.log(refs.select.innerHTML);
     refs.select.classList.toggle('visually-hidden');
     refs.loader.classList.toggle('visually-hidden');
     new SlimSelect({
@@ -80,7 +74,7 @@ function errMsg() {
     position: 'center-top',
     width: '600px',
     fontSize: '24px',
-    timeout: 1500,
+    timeout: 5000,
     useIcon: false,
   });
 }
